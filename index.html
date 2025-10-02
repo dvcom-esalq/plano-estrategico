@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Infográfico Interativo - Plano Estratégico Esalq</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-image: linear-gradient(rgba(26, 26, 46, 0.85), rgba(26, 26, 46, 0.85)), url('https://i.postimg.cc/LXQhLxgs/Imagem-1920px.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            scroll-behavior: smooth; /* Adicionado para suavizar a rolagem */
+        }
+        .commission-card {
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.4s ease;
+            cursor: pointer;
+            width: 100%; /* Garantir que o botão ocupe o espaço */
+        }
+        .commission-card:hover, .commission-card:focus { /* Adicionado estado :focus */
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+            outline: 2px solid #315745; /* Destaque de foco para acessibilidade */
+            outline-offset: 2px;
+        }
+        .detail-view {
+            transition: opacity 0.5s ease-in-out;
+        }
+        .hidden {
+            display: none;
+        }
+        .back-button {
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+        .back-button:hover {
+            transform: scale(1.05);
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .animated-element {
+            opacity: 0;
+            animation: fadeIn 0.8s ease-out forwards;
+        }
+        
+        /* Fontes Dinâmicas para Projeção */
+        .dynamic-title {
+            font-size: clamp(1.8rem, 2.5vw, 2.5rem);
+        }
+        .dynamic-subtitle {
+            font-size: clamp(1rem, 1.5vw, 1.5rem);
+        }
+         .detail-title {
+            font-size: clamp(2.5rem, 4vw, 4rem);
+        }
+        .detail-subtitle {
+            font-size: clamp(1.5rem, 2.5vw, 2.5rem);
+        }
+        .detail-section-title {
+             font-size: clamp(1.8rem, 2.2vw, 2.2rem);
+        }
+        .detail-text {
+            font-size: clamp(1rem, 1.2vw, 1.4rem);
+        }
+
+    </style>
+</head>
+<body class="min-h-screen flex flex-col items-center justify-center p-4 md:p-8">
+    <div id="main-view" class="max-w-screen-xl mx-auto w-full">
+        <header class="w-full p-4 mb-12 h-16 md:h-20"></header>
+        
+        <main class="flex flex-col lg:flex-row justify-between items-center">
+            <div class="space-y-12 lg:space-y-20 flex flex-col items-center w-full lg:w-auto mb-8 lg:mb-0 left-column">
+                <button id="graduacao" class="commission-card bg-white p-8 rounded-lg max-w-md lg:w-96 border-l-8 border-[#315745] animated-element text-center">
+                    <h3 class="font-bold text-[#315745] text-3xl leading-tight h-28 flex items-center justify-center">Graduação</h3>
+                    <p class="text-xl text-gray-500 mt-2">Excelência na Formação</p>
+                </button>
+                <button id="pesquisa-inovacao" class="commission-card bg-white p-8 rounded-lg max-w-md lg:w-96 border-l-8 border-[#315745] animated-element text-center">
+                    <h3 class="font-bold text-[#315745] text-3xl leading-tight h-28 flex items-center justify-center">Pesquisa e Inovação</h3>
+                    <p class="text-xl text-gray-500 mt-2">Conhecimento de Fronteira</p>
+                </button>
+                <button id="cultura-extensao" class="commission-card bg-white p-8 rounded-lg max-w-md lg:w-96 border-l-8 border-[#315745] animated-element text-center">
+                    <h3 class="font-bold text-[#315745] text-3xl leading-tight h-28 flex items-center justify-center">Cultura e Extensão</h3>
+                    <p class="text-xl text-gray-500 mt-2">Diálogo com a Sociedade</p>
+                </button>
+            </div>
+            
+            <div class="w-full lg:w-1/3 flex flex-col items-center justify-center px-0 lg:px-12 mb-8 lg:mb-0 animated-element center-column">
+                <div class="bg-white rounded-lg shadow-lg center-image mb-12">
+                    <img id="center-image-clickable" src="https://i.postimg.cc/7hjZMT5z/Capa-vazada-1.png" alt="Imagem do Resumo do Plano Estratégico" class="w-full max-w-lg h-auto cursor-pointer transition-transform duration-300 hover:scale-105" onerror="this.style.display='none'" tabindex="0">
+                </div>
+                <button id="governanca" class="commission-card bg-white p-8 rounded-lg max-w-md lg:w-96 border-l-8 border-amber-500 animated-element text-center">
+                    <h3 class="font-bold text-amber-600 text-3xl leading-tight h-28 flex items-center justify-center">Governança</h3>
+                    <p class="text-xl text-gray-500 mt-2">Visão Estratégica</p>
+                </button>
+            </div>
+            
+            <div class="space-y-12 lg:space-y-20 flex flex-col items-center w-full lg:w-auto right-column">
+                 <button id="pos-graduacao" class="commission-card bg-white p-8 rounded-lg max-w-md lg:w-96 border-l-8 border-[#315745] animated-element text-center">
+                    <h3 class="font-bold text-[#315745] text-3xl leading-tight h-28 flex items-center justify-center">Pós-Graduação</h3>
+                    <p class="text-xl text-gray-500 mt-2">Pesquisa de Alto Impacto</p>
+                </button>
+                 <button id="inclusao-pertencimento" class="commission-card bg-white p-8 rounded-lg max-w-md lg:w-96 border-l-8 border-[#315745] animated-element text-center">
+                    <h3 class="font-bold text-[#315745] text-3xl leading-tight h-28 flex items-center justify-center">Inclusão e Pertencimento</h3>
+                    <p class="text-xl text-gray-500 mt-2">Acolhimento e Respeito</p>
+                </button>
+                <button id="relacoes-internacionais" class="commission-card bg-white p-8 rounded-lg max-w-md lg:w-96 border-l-8 border-[#315745] animated-element text-center">
+                    <h3 class="font-bold text-[#315745] text-2xl leading-tight h-28 flex items-center justify-center">Cooperação Nacional e Internacional</h3>
+                    <p class="text-xl text-gray-500 mt-2">Conexões Globais</p>
+                </button>
+            </div>
+        </main>
+
+        <footer class="w-full p-4 mt-16 flex justify-center items-center">
+            <img src="https://i.postimg.cc/dQ9RLLM0/Logo-Esalq-USP-alinhado.png" alt="Logotipo da Esalq e USP alinhado" class="h-20" onerror="this.style.display='none'">
+        </footer>
+    </div>
+
+    <div id="detail-views-container"></div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const mainView = document.getElementById('main-view');
+            const detailViewsContainer = document.getElementById('detail-views-container');
+            
+            let lastClickedElement = null; 
+
+            // --- MELHORIA: Animação de entrada escalonada ---
+            const animatedElements = document.querySelectorAll('#main-view .animated-element');
+            animatedElements.forEach((el, index) => {
+                el.style.animationDelay = `${index * 120}ms`;
+            });
+
+            // --- BASE DE DADOS com o conteúdo de cada comissão ---
+            const commissionsData = {
+                'graduacao': {
+                    title: 'Graduação',
+                    subtitle: 'Excelência na Formação',
+                    color: '#315745',
+                    projects: [
+                        `
+                            <div class="text-left font-medium detail-text">
+                                <h5 class="font-bold detail-section-title text-[#315745] mb-5">Ações Principais (2023-2025):</h5>
+                                <ul class="list-disc list-inside text-gray-800 space-y-5">
+                                    <li><strong class="font-semibold">Reestruturação Curricular:</strong> Modernização dos cursos com foco em prática e Atividades de Extensão (AEX).</li>
+                                    <li><strong class="font-semibold">Contratação de Docentes:</strong> Reforço estratégico com a contratação de 50 novos docentes.</li>
+                                    <li><strong class="font-semibold">Fortalecimento do Ensino:</strong> Impulso aos projetos de ensino, com salto de 18 para 62 projetos aprovados e de 31 para 62 bolsas (PUB).</li>
+                                </ul>
+                                <h5 class="font-bold detail-section-title text-[#315745] mt-10 mb-5">Resultados:</h5>
+                                <ul class="list-disc list-inside text-gray-800 space-y-5">
+                                    <li>Adequação dos cursos às demandas sociais, ambientais e de mercado.</li>
+                                    <li>Maior valorização do ensino e ampliação das oportunidades de aprendizagem.</li>
+                                </ul>
+                                <h5 class="font-bold detail-section-title text-[#315745] mt-10 mb-5">Plano Estratégico Esalq:</h5>
+                                <ul class="list-disc list-inside text-gray-800 space-y-5">
+                                    <li>OE 02 - Ampliar e garantir a atratividade, permanência e formação plena de estudantes, em todos os níveis.</li>
+                                </ul>
+                            </div>
+                        `
+                    ],
+                },
+                'pos-graduacao': {
+                    title: 'Pós-Graduação',
+                    subtitle: 'Pesquisa de Alto Impacto',
+                    color: '#315745',
+                    projects: [
+                         `
+                            <div class="text-left detail-text font-medium">
+                                <h5 class="font-bold detail-section-title text-[#315745] mb-5">Ações Principais (2023-2025):</h5>
+                                <ul class="list-disc list-inside text-gray-800 space-y-5">
+                                    <li><strong class="font-semibold">Modernização Curricular:</strong> Disciplinas híbridas e em inglês; flexibilização da grade para priorizar pesquisa; promoção de mobilidade acadêmica e profissional para experiências práticas.</li>
+                                    <li><strong class="font-semibold">Ações de Pertencimento:</strong> Evento de boas-vindas com foco em acolhimento e saúde mental com recorde de adesão.</li>
+                                    <li><strong class="font-semibold">Ações Afirmativas:</strong> Cotas de 20% das vagas para grupos sub-representados; equilíbrio de gênero (46% mulheres / 54% homens).</li>
+                                </ul>
+                                <h5 class="font-bold detail-section-title text-[#315745] mt-10 mb-5">Resultados:</h5>
+                                <ul class="list-disc list-inside text-gray-800 space-y-5">
+                                    <li>Formação de pesquisadores de alto impacto, alinhados a padrões globais.</li>
+                                    <li>Melhora do bem-estar discente e do ambiente acadêmico.</li>
+                                    <li>Maior diversidade e representatividade na pós-graduação.</li>
+                                </ul>
+                                <h5 class="font-bold detail-section-title text-[#315745] mt-10 mb-5">Plano Estratégico Esalq:</h5>
+                                <ul class="list-disc list-inside text-gray-800 space-y-5">
+                                    <li>OE 02 – Ampliar e garantir a atratividade, permanência e formação plena de estudantes, em todos os níveis</li>
+                                    <li>OE 05 – Promover equidade, diversidade, inclusão e pertencimento</li>
+                                </ul>
+                            </div>
+                        `
+                    ],
+                },
+                'cultura-extensao': {
+                    title: 'Cultura e Extensão',
+                    subtitle: 'Diálogo com a Sociedade',
+                    color: '#315745',
+                    projects: [
+                        `
+                            <div class="text-left detail-text font-medium">
+                                <h5 class="font-bold detail-section-title text-[#315745] mb-5">Ações Principais (2023–2025):</h5>
+                                <ul class="list-disc list-inside text-gray-800 space-y-5">
+                                    <li><strong class="font-semibold">Expansão da extensão e cursos:</strong> 100 atividades, 96 mil participantes.</li>
+                                    <li><strong class="font-semibold">Fortalecimento cultural</strong> e parcerias estratégicas.</li>
+                                    <li><strong class="font-semibold">Inclusão e impacto social:</strong> bolsas, eventos culturais e doações.</li>
+                                </ul>
+                                <h5 class="font-bold detail-section-title text-[#315745] mt-10 mb-5">Resultados:</h5>
+                                <ul class="list-disc list-inside text-gray-800 space-y-5">
+                                    <li>Maior impacto social e cultural.</li>
+                                    <li>Formação e permanência estudantil ampliadas.</li>
+                                    <li>Diversidade e diálogo com a comunidade fortalecidos.</li>
+                                </ul>
+                                <h5 class="font-bold detail-section-title text-[#315745] mt-10 mb-5">Plano Estratégico Esalq:</h5>
+                                <ul class="list-disc list-inside text-gray-800 space-y-5">
+                                    <li>OE 01 – Ampliar o impacto das atividades de pesquisa, extensão e cultura</li>
+                                    <li>OE 02 – Ampliar e garantir a atratividade, permanência e formação plena de estudantes, em todos os níveis</li>
+                                    <li>OE 05 – Promover equidade, diversidade, inclusão e pertencimento</li>
+                                    <li>OE 06 – Ampliar e aprofundar o diálogo com a sociedade</li>
+                                </ul>
+                            </div>
+                        `
+                    ],
+                },
+                'pesquisa-inovacao': {
+                    title: 'Pesquisa e Inovação',
+                    subtitle: 'Conhecimento de Fronteira',
+                    color: '#315745',
+                    projects: [
+                        `
+                            <div class="text-left detail-text font-medium">
+                                <h5 class="font-bold detail-section-title text-[#315745] mb-5">Ações Principais (2023-2025):</h5>
+                                <ul class="list-disc list-inside text-gray-800 space-y-5">
+                                    <li><strong class="font-semibold">Recursos Estratégicos (Fapesp):</strong> Editais >R$ 5,5 milhões para infraestrutura e projetos interdepartamentais.</li>
+                                    <li><strong class="font-semibold">Parceria-Chave (John Deere):</strong> 15 bolsas de Iniciação Científica e fomento a projetos.</li>
+                                    <li><strong class="font-semibold">Capital Humano Qualificado:</strong> Contratação de especialistas (PROSERV) e Pós-Doc para gestão da inovação.</li>
+                                    <li><strong class="font-semibold">Preservação de Acervos (FINEP):</strong> Captação >R$ 6,3 milhões para Biblioteca Central e Museu de Entomologia.</li>
+                                    <li><strong class="font-semibold">Ecossistema de Inovação:</strong> Cocriação do Parque Científico e Tecnológico (Esalq Science Park).</li>
+                                </ul>
+                                <h5 class="font-bold detail-section-title text-[#315745] mt-10 mb-5">Resultados:</h5>
+                                <ul class="list-disc list-inside text-gray-800 space-y-5">
+                                    <li>Captação de recursos externos e modernização da infraestrutura.</li>
+                                    <li>Consolidação de parcerias estratégicas público-privadas.</li>
+                                    <li>Maior pesquisa interdisciplinar e visibilidade da Esalq como polo de inovação.</li>
+                                </ul>
+                                <h5 class="font-bold detail-section-title text-[#315745] mt-10 mb-5">Plano Estratégico Esalq:</h5>
+                                <ul class="list-disc list-inside text-gray-800 space-y-5">
+                                    <li>OE 01 – Impacto em pesquisa, extensão e cultura</li>
+                                    <li>OE 02 – Atratividade e formação plena de estudantes</li>
+                                    <li>OE 04 – Modernização e infraestrutura</li>
+                                    <li>OE 06 – Diálogo com a sociedade</li>
+                                </ul>
+                            </div>
+                        `
+                    ],
+                },
+                'inclusao-pertencimento': {
+                    title: 'Inclusão e Pertencimento',
+                    subtitle: 'Acolhimento e Respeito',
+                    color: '#315745',
+                    projects: [
+                        `
+                            <div class="text-left detail-text font-medium">
+                                <h5 class="font-bold detail-section-title text-[#315745] mb-5">Ações Principais (2023–2025):</h5>
+                                <ul class="list-disc list-inside text-gray-800 space-y-5">
+                                    <li>Apoio a coletivos estudantis e eventos de diversidade.</li>
+                                    <li>Capacitações sobre assédio, inclusão, acessibilidade e saúde mental.</li>
+                                    <li>Novos canais institucionais de acolhimento e suporte.</li>
+                                    <li>Expansão de bolsas PUB em Inclusão e Pertencimento.</li>
+                                    <li>Incentivo à equidade de gênero e representatividade em cargos e bancas.</li>
+                                </ul>
+                                <h5 class="font-bold detail-section-title text-[#315745] mt-10 mb-5">Resultados:</h5>
+                                <ul class="list-disc list-inside text-gray-800 space-y-5">
+                                    <li>Maior engajamento e integração da comunidade acadêmica.</li>
+                                    <li>Crescimento da representatividade e diversidade em cargos e eventos.</li>
+                                    <li>Ampliação da participação estudantil em projetos de inclusão.</li>
+                                    <li>Rede de apoio fortalecida para acolher estudantes e servidores.</li>
+                                </ul>
+                                <h5 class="font-bold detail-section-title text-[#315745] mt-10 mb-5">Plano Estratégico Esalq:</h5>
+                                <ul class="list-disc list-inside text-gray-800 space-y-5">
+                                    <li>OE 05 (principal): Promover equidade, diversidade e inclusão</li>
+                                    <li>OE 01, 02, 03, 04, 06 (ações transversais).</li>
+                                </ul>
+                            </div>
+                        `
+                    ],
+                },
+                'relacoes-internacionais': {
+                    title: 'Cooperação Nacional e Internacional',
+                    subtitle: 'Conexões Globais',
+                    color: '#315745',
+                    projects: [
+                         `
+                            <div class="text-left detail-text font-medium">
+                                <h5 class="font-bold detail-section-title text-[#315745] mb-5">Ações Principais (2023-2025):</h5>
+                                <ul class="list-disc list-inside text-gray-800 space-y-5">
+                                    <li><strong class="font-semibold">Gestão da Mobilidade Acadêmica:</strong> Coordenação do intercâmbio de mais de 300 estudantes e gerenciamento de 59 convênios internacionais.</li>
+                                    <li><strong class="font-semibold">Engajamento em Plataformas Globais:</strong> Participação em competições de inovação, programas imersivos (International School) e plataformas de pesquisa de doutorado.</li>
+                                    <li><strong class="font-semibold">Criação do Parque Tecnológico A3:</strong> Atuação estratégica na criação e implementação do novo ambiente de inovação da ESALQ.</li>
+                                </ul>
+                                <h5 class="font-bold detail-section-title text-[#315745] mt-10 mb-5">Resultados:</h5>
+                                <ul class="list-disc list-inside text-gray-800 space-y-5">
+                                    <li>Oficialização do Parque Científico e Tecnológico A3 pela Reitoria da USP (julho/2025).</li>
+                                    <li>Reconhecimento internacional com o 3º lugar na competição Food Systems Innovation Challenge (2024).</li>
+                                    <li>Ampliação da visibilidade e atratividade da ESALQ no cenário global.</li>
+                                </ul>
+                                <h5 class="font-bold detail-section-title text-[#315745] mt-10 mb-5">Plano Estratégico Esalq:</h5>
+                                <ul class="list-disc list-inside text-gray-800 space-y-5">
+                                    <li>OE 01 - Ampliar o impacto das atividades de pesquisa, extensão e cultura.</li>
+                                    <li>OE 02 - Ampliar e garantir a atratividade, permanência e formação plena de estudantes, em todos os níveis.</li>
+                                    <li>OE 06 - Ampliar e aprofundar o diálogo com a sociedade.</li>
+                                </ul>
+                            </div>
+                        `
+                    ],
+                },
+                'governanca': {
+                    title: 'Governança',
+                    subtitle: `
+                        Visão Estratégica
+                        <a href="#" target="_blank" rel="noopener noreferrer" class="inline-block align-middle" title="Acessar painel de dados (Metabase)">
+                            <svg class="h-8 w-8 ml-2 text-white hover:text-gray-300 transition-colors duration-200" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 0 1 3 19.875v-6.75zM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 0 1-1.125-1.125V8.625zM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 0 1-1.125-1.125V4.125z" />
+                            </svg>
+                        </a>
+                    `,
+                    color: '#D97706',
+                    projects: [
+                        `
+                            <div class="text-left font-medium detail-text">
+                                <h5 class="font-bold detail-section-title text-[#315745] mb-5">AÇÕES EM DESTAQUE</h5>
+                                <ul class="list-none space-y-6">
+                                    <li>
+                                        <p class="font-semibold text-gray-800 text-xl">Novo Organograma e Regimentos</p>
+                                        <ul class="list-disc list-inside text-gray-700 space-y-2 mt-2 pl-4">
+                                            <li>Reestruturação organizacional para maior agilidade, clareza de responsabilidades e alinhamento com a USP.</li>
+                                            <li>Benefícios esperados: transparência, valorização do capital humano e atração de talentos.</li>
+                                        </ul>
+                                    </li>
+                                    <li>
+                                        <p class="font-semibold text-gray-800 text-xl">Criação do Escritório de Dados</p>
+                                        <ul class="list-disc list-inside text-gray-700 space-y-2 mt-2 pl-4">
+                                            <li>Monitoramento de indicadores para apoiar decisões estratégicas.</li>
+                                            <li>Uso de ferramentas como Metabase e Power BI para dashboards.</li>
+                                        </ul>
+                                    </li>
+                                    <li>
+                                        <p class="font-semibold text-gray-800 text-xl">Novo Portal da Esalq</p>
+                                        <ul class="list-disc list-inside text-gray-700 space-y-2 mt-2 pl-4">
+                                            <li>Modernização tecnológica e visual do site para uma experiência mais intuitiva.</li>
+                                        </ul>
+                                    </li>
+                                    <li>
+                                        <p class="font-semibold text-gray-800 text-xl">Modernização da Biblioteca</p>
+                                        <ul class="list-disc list-inside text-gray-700 space-y-2 mt-2 pl-4">
+                                            <li>Ações de letramento informacional, adequação dos espaços e ampliação do diálogo com a sociedade.</li>
+                                        </ul>
+                                    </li>
+                                     <li>
+                                        <p class="font-semibold text-gray-800 text-xl">Mobilidade dos Servidores e Rotatividade das Chefias</p>
+                                        <ul class="list-disc list-inside text-gray-700 space-y-2 mt-2 pl-4">
+                                            <li>Criação da Comissão de Desenvolvimento de Pessoal para valorização, capacitação e saúde mental.</li>
+                                            <li>Implementação de rotatividade nas chefias para inovação e desenvolvimento de talentos.</li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </div>
+                        `
+                    ],
+                }
+            };
+
+            function createDetailView(commissionId) {
+                const data = commissionsData[commissionId];
+                const view = document.createElement('div');
+                view.id = `detail-${commissionId}`;
+                view.className = 'detail-view min-h-screen w-full flex flex-col items-center justify-center p-4 hidden';
+
+                const projectsHtml = data.projects.join('');
+
+                view.innerHTML = `
+                    <div class="max-w-7xl w-full animated-element">
+                        <div class="text-center mb-8">
+                             <button class="back-button bg-gray-700 text-white font-bold py-3 px-8 rounded-full hover:bg-gray-800 text-lg">
+                                 &larr; Voltar ao Início
+                             </button>
+                        </div>
+
+                        <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+                            <div class="text-center p-8" style="background-color: ${data.color};">
+                                <h3 class="font-bold detail-title text-white">${data.title}</h3>
+                                <div class="detail-subtitle text-gray-200 mt-2 flex items-center justify-center">${data.subtitle}</div>
+                            </div>
+
+                            <div class="p-8 md:p-12">
+                                <div class="w-full">
+                                    <div class="space-y-6">
+                                        ${projectsHtml}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                
+                view.querySelector('.back-button').addEventListener('click', () => {
+                    hideAllDetails();
+                    mainView.classList.remove('hidden');
+                    if (lastClickedElement) {
+                        setTimeout(() => {
+                            lastClickedElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                            lastClickedElement.focus({ preventScroll: true });
+                        }, 50);
+                    }
+                });
+
+                return view;
+            }
+
+            function hideAllDetails() {
+                document.querySelectorAll('.detail-view').forEach(v => v.classList.add('hidden'));
+            }
+
+            // --- INTERATIVIDADE DAS COMISSÕES ---
+            Object.keys(commissionsData).forEach(id => {
+                const commissionCard = document.getElementById(id);
+                if (!commissionCard) return; 
+                
+                if(!document.getElementById(`detail-${id}`)) {
+                    const detailView = createDetailView(id);
+                    detailViewsContainer.appendChild(detailView);
+                }
+
+                commissionCard.addEventListener('click', () => {
+                    lastClickedElement = commissionCard;
+                    mainView.classList.add('hidden');
+                    hideAllDetails();
+                    const targetDetailView = document.getElementById(`detail-${id}`);
+                    targetDetailView.classList.remove('hidden');
+                    targetDetailView.querySelector('.back-button').focus();
+                });
+            });
+
+             // --- INTERATIVIDADE DA IMAGEM CENTRAL ---
+            const centerImage = document.getElementById('center-image-clickable');
+
+            function createMapView() {
+                const view = document.createElement('div');
+                view.id = `detail-map`;
+                view.className = 'detail-view min-h-screen w-full flex flex-col items-center justify-center p-4 hidden';
+                view.innerHTML = `
+                    <div class="max-w-7xl w-full animated-element">
+                        <div class="text-center mb-8">
+                             <button class="back-button bg-gray-700 text-white font-bold py-3 px-8 rounded-full hover:bg-gray-800 text-lg">
+                                 &larr; Voltar ao Início
+                             </button>
+                        </div>
+                        <div class="bg-white p-4 rounded-lg shadow-lg">
+                            <img src="https://i.postimg.cc/zX6Sctmm/mapa-estrategico.png" alt="[Imagem do Mapa Estratégico da Esalq]" class="w-full h-auto">
+                        </div>
+                    </div>
+                `;
+                
+                view.querySelector('.back-button').addEventListener('click', () => {
+                    hideAllDetails();
+                    mainView.classList.remove('hidden');
+                    if (lastClickedElement) {
+                        setTimeout(() => {
+                            lastClickedElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                            lastClickedElement.focus({ preventScroll: true });
+                        }, 50);
+                    }
+                });
+                return view;
+            }
+
+            if(!document.getElementById('detail-map')) {
+                const mapView = createMapView();
+                detailViewsContainer.appendChild(mapView);
+            }
+            
+            if(centerImage) {
+                const openMap = () => {
+                    lastClickedElement = centerImage;
+                    mainView.classList.add('hidden');
+                    hideAllDetails();
+                    const targetDetailView = document.getElementById(`detail-map`);
+                    targetDetailView.classList.remove('hidden');
+                    targetDetailView.querySelector('.back-button').focus();
+                };
+                
+                centerImage.addEventListener('click', openMap);
+                centerImage.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter') {
+                        openMap();
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>
